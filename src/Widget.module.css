@@ -1,0 +1,15 @@
+.widgetWrapper {
+    border: 1px solid black;
+    margin-top: 20px;
+    margin-left: 20px;
+    display: inline-block;
+    padding: 20px;
+}
+.deleteWidget {
+    text-align: right;
+    cursor: pointer;
+}
+
+.deleteWidget:hover {
+    text-decoration: underline;
+}
