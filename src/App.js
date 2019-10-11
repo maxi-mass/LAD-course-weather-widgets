@@ -15,6 +15,10 @@ const App = () => {
     };
 
     const getData = (event) => {
+        if (event.type==='keydown' && event.keyCode!==13) {
+            return;
+        }
+
         let requestCity = serCityRef.current.value;
         serCityRef.current.value = "";
 
@@ -31,7 +35,10 @@ const App = () => {
 
     return (
         <div className={'wrapper'}>
-            <p><input ref={serCityRef} type="text"/><button onClick={getData}>+</button></p>
+            <p>
+                <input onKeyDown={getData} ref={serCityRef} type="text"/>
+                <button onClick={getData}>+</button>
+            </p>
             {widgets.map(data => <Widget
                 key={data.name}
                 setWidgets={setWidgets}
