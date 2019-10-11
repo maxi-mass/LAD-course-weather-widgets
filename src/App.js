@@ -1,12 +1,13 @@
 import React from 'react';
 import * as axios from "axios";
-import Widget from "./Widget";
+import Widget from "./components/Widget/Widget";
 import {useState, useEffect} from "react";
 import "./App.css";
 
 const App = () => {
     const[widgets, setWidgets] = useState([]);
     const serCityRef = React.createRef();
+    const getApiUrl = requestCity => 'http://openweathermap.org/data/2.5/weather?q=' + requestCity + '&appid=b6907d289e10d714a6e88b30761fae22';
 
     const closeWidget = cityId => {
         let filteredWidgets = widgets.filter(wData => wData.name !== cityId);
@@ -17,7 +18,7 @@ const App = () => {
         let requestCity = serCityRef.current.value;
         serCityRef.current.value = "";
 
-        let apiUrl = 'http://openweathermap.org/data/2.5/weather?q=' + requestCity + '&appid=b6907d289e10d714a6e88b30761fae22';
+        let apiUrl = getApiUrl(requestCity);
 
         axios.get(apiUrl).then(response => {
             if (widgets && !widgets.some(wData => wData.name === response.data.name)) {
@@ -37,6 +38,7 @@ const App = () => {
                 cityId={data.name}
                 data={data}
                 closeWidget={closeWidget}
+                getApiUrl={getApiUrl}
             />)}
         </div>
     );

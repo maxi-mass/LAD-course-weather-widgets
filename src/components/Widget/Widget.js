@@ -4,14 +4,14 @@ import {useEffect, useState} from "react";
 import * as axios from "axios";
 
 const Widget = props => {
-    const[cityName, setCityName] = useState(props.data.name);
     const[temp, setTemp] = useState(props.data.main.temp);
     const[humidity, setHumidity] = useState(props.data.main.humidity);
     const[windSpeed, setWindSpeed] = useState(props.data.wind.speed);
+    const[intervalId, setIntervalId] = useState(null);
 
     useEffect(() => {
-        setInterval(() => {
-            let apiUrl = 'http://openweathermap.org/data/2.5/weather?q=' + props.data.name + '&appid=b6907d289e10d714a6e88b30761fae22';
+        let intervalId = setInterval(() => {
+            let apiUrl = props.getApiUrl(props.data.name);
             axios.get(apiUrl).then(response => {
                 let data = response.data;
                 setTemp(data.main.temp);
@@ -19,6 +19,7 @@ const Widget = props => {
                 setWindSpeed(data.wind.speed);
             });
         }, 5000);
+        setIntervalId(intervalId);
     }, [props.data]);
 
     return (
@@ -29,7 +30,10 @@ const Widget = props => {
             <p><span>Скорость ветра(м/c): </span>{windSpeed}</p>
 
             <div
-                onClick={() => {props.closeWidget(props.data.name)}}
+                onClick={() => {
+                    clearInterval(intervalId);
+                    props.closeWidget(props.data.name)
+                }}
                 className={styles.deleteWidget}>Закрыть
             </div>
         </div>
